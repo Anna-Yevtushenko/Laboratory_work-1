@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 first_object = np.array([[0, 0], [1, 0], [1, 0.5], [0, 1]])
-second_object = np.array([[0, 0], [1, 0], [1.5, 1], [0.5, 1.5], [0, 1]])
+second_object = np.array([[0, 0], [1, 0]])
 
 
 def objects_visualization(object1, object2):
@@ -18,3 +18,16 @@ def objects_visualization(object1, object2):
     plt.show()#створюємо графік
 
 plot_objects = objects_visualization(first_object, second_object)
+
+
+def rotate_object(object, angle_deg):
+
+    rotation_matrix = np.array([[np.cos(angle_deg), -np.sin(angle_deg)],
+                                [np.sin(angle_deg), np.cos(angle_deg)]])
+
+
+    rotated_obj = np.dot(object, rotation_matrix)
+    return rotated_obj
+
+rotate_object(first_object,90)
+
