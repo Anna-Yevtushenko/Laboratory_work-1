@@ -1,6 +1,6 @@
 import numpy as np
 import cv2 as cv
-
+import matplotlib.pyplot as plt
 
 first_object = np.array([[1.5, 0.5], [1.5, 2], [3.5, 2], [3.5, 0.5], [2.5, 1], [1.5, 0.5], [1.5, 2]])
 second_object = np.array([[0, 0], [1, 2], [1, 0], [0, 0]])
@@ -16,21 +16,17 @@ def start_program():
         else:
             print("You entered an invalid answer. Please enter 'y' or 'n'.")
 
-def objects_visualization(object1, object2, title='Objects in 2D Space'):
-    img = np.ones((1000, 1000, 3), dtype=np.uint8) * 255  # створення білого фону
-
-    object1 = (object1 * 50 + 250).astype(int) # Масштабування об'єктів (для кращої візуалізації)
-    object2 = (object2 * 50 + 250).astype(int)
-
-    for i in range(len(object1) - 1): # Малювання першого об'єкта (синій колір)
-        cv.line(img, tuple(object1[i]), tuple(object1[i + 1]), (255, 0, 0), 2)
-    for i in range(len(object2) - 1): # Малювання другого об'єкта (червоний колір)
-        cv.line(img, tuple(object2[i]), tuple(object2[i + 1]), (0, 0, 255), 2)
-
-    cv.imshow(title, img)
-    cv.waitKey(0)
-    cv.destroyAllWindows()
-
+def objects_visualization(object1, object2):
+    plt.figure(figsize=(8, 8))
+    plt.plot(object1[:, 0], object1[:, 1], 'b-', label='Object 1')
+    plt.plot(object2[:, 0], object2[:, 1], 'r-', label='Object 2')
+    plt.legend()
+    plt.grid(True)
+    plt.title('Objects in 2D Space')
+    plt.xlim(-10, 15)
+    plt.ylim(-10, 15)
+    plt.axis('equal')
+    plt.show()
 def rotate_object(object, angle_deg):
     center = tuple(np.mean(object, axis=0))  # Обчислюємо центр об'єкта, аби використовувати його як центр обертання
     rotation_matrix = cv.getRotationMatrix2D(center, angle_deg, 1.0) # Створюємо матрицю обертання для заданого кута в градусах навколо центру об'єкта
