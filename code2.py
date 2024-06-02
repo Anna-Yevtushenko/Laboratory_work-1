@@ -27,12 +27,15 @@ def objects_visualization(object1, object2, title='Objects in 2D Space'):
     for i in range(len(object2) - 1): # Малювання другого об'єкта (червоний колір)
         cv.line(img, tuple(object2[i]), tuple(object2[i + 1]), (0, 0, 255), 2)
 
-    cv.imshow(title, img) 
+    cv.imshow(title, img)
     cv.waitKey(0)
     cv.destroyAllWindows()
 
 def rotate_object(object, angle_deg):
-    pass
+    center = tuple(np.mean(object, axis=0))  # Обчислюємо центр об'єкта, аби використовувати його як центр обертання
+    rotation_matrix = cv.getRotationMatrix2D(center, angle_deg, 1.0) # Створюємо матрицю обертання для заданого кута в градусах навколо центру об'єкта
+    rotated_obj = cv.transform(np.array([object]), rotation_matrix)[0]
+    return rotated_obj
 
 def scale_object(object, scale):
     pass
