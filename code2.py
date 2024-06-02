@@ -17,7 +17,20 @@ def start_program():
             print("You entered an invalid answer. Please enter 'y' or 'n'.")
 
 def objects_visualization(object1, object2, title='Objects in 2D Space'):
-    pass
+    img = np.ones((500, 500, 3), dtype=np.uint8) * 255  # створення білого фону
+
+    object1 = (object1 * 50 + 250).astype(int) # Масштабування об'єктів (для кращої візуалізації)
+    object2 = (object2 * 50 + 250).astype(int)
+
+    for i in range(len(object1) - 1): # Малювання першого об'єкта (синій колір)
+        cv.line(img, tuple(object1[i]), tuple(object1[i + 1]), (255, 0, 0), 2)
+    for i in range(len(object2) - 1): # Малювання другого об'єкта (червоний колір)
+        cv.line(img, tuple(object2[i]), tuple(object2[i + 1]), (0, 0, 255), 2)
+
+    cv.imshow(title, img) 
+    cv.waitKey(0)
+    cv.destroyAllWindows()
+
 def rotate_object(object, angle_deg):
     pass
 
