@@ -17,7 +17,7 @@ def start_program():
             print("You entered an invalid answer. Please enter 'y' or 'n'.")
 
 def objects_visualization(object1, object2, title='Objects in 2D Space'):
-    img = np.ones((500, 500, 3), dtype=np.uint8) * 255  # створення білого фону
+    img = np.ones((1000, 1000, 3), dtype=np.uint8) * 255  # створення білого фону
 
     object1 = (object1 * 50 + 250).astype(int) # Масштабування об'єктів (для кращої візуалізації)
     object2 = (object2 * 50 + 250).astype(int)
@@ -38,23 +38,41 @@ def rotate_object(object, angle_deg):
     return rotated_obj
 
 def scale_object(object, scale):
-    pass
+    scaling_matrix = np.array([[scale, 0, 0], [0, scale, 0]], dtype=np.float32)
+    scaled_obj = cv.transform(np.array([object]), scaling_matrix)[0]
+    return scaled_obj
 
 def reflect_object(object, axis):
-    pass
+    if axis.lower() == 'x':
+        reflection_matrix = np.array([[1, 0], [0, -1]], dtype=np.float32)
+    elif axis.lower() == 'y':
+        reflection_matrix = np.array([[-1, 0], [0, 1]], dtype=np.float32)
+    else:
+        raise ValueError("Write 'x' or 'y'")
+    # Виконуємо віддзеркалення об'єкта за допомогою матриці віддзеркалення
+    reflected_obj = cv.transform(np.array([object]), reflection_matrix)[0]
+    return reflected_obj
+
 
 def shear_object(object, axis, factor):
-    pass
+    if axis.lower() == 'x':
+        shear_matrix = np.array([[1, factor], [0, 1]], dtype=np.float32)
+    elif axis.lower() == 'y':
+        shear_matrix = np.array([[1, 0], [factor, 1]], dtype=np.float32)
+    else:
+        raise ValueError("Write 'x' or 'y'")
 
-def custom_transform(object, matrix):
-    pass
+    # Виконуємо зсув об'єкта за допомогою матриці зсуву
+    sheared_obj = cv.transform(np.array([object]), shear_matrix)[0]
+    return sheared_obj
+
 
 
 
 def main():
     start_program()
     while True:
-        command = input("Enter command (rotate, scale, reflect, shear, custom, exit): ").strip().lower()
+        command = input("Enter command (rotate, scale, reflect, shear, exit): ").strip().lower()
         if command == 'exit':
             print('Exit!')
             break
@@ -81,10 +99,7 @@ def main():
             axis = input("Write axis (x or y): ").strip().lower()
             factor = float(input("Enter shear factor: "))
             result = shear_object(obj, axis, factor)
-        elif command == 'custom':
-            matrix = input("Enter custom transformation matrix (as a flattened list): ").strip()
-            matrix = np.array([float(x) for x in matrix.split()]).reshape((2, 3))
-            result = custom_transform(obj, matrix)
+
         else:
             print("Invalid command")
             continue
